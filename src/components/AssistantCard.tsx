@@ -34,31 +34,26 @@ export const AssistantCard = ({ name, title, description, avatar, icon: Icon, pr
     <Card 
       className={`relative overflow-hidden bg-gradient-to-br ${colorClasses[color]} border-none cursor-pointer transition-all duration-300 active:scale-95 hover:scale-[1.02] shadow-lg`}
     >
-      <div className="p-4">
-        <div className="flex items-center gap-3 mb-3">
-          <Avatar className="w-14 h-14 border-2 border-background/80 shadow-md">
-            <AvatarImage src={avatar} alt={name} />
-            <AvatarFallback className={iconColorClasses[color]}>
-              <Icon className="w-5 h-5" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-base font-bold text-foreground mb-0.5 leading-tight">{name}</h3>
-            <p className="text-xs font-medium text-foreground/80">{title}</p>
-          </div>
-          <div className="flex flex-col items-end">
-            <span className="text-lg font-bold text-foreground">{progress}%</span>
-            <span className="text-[10px] text-muted-foreground">{lessons} done</span>
-          </div>
-        </div>
+      <div className="p-3 flex items-center gap-3">
+        <Avatar className="w-12 h-12 border-2 border-background/80 shadow-md flex-shrink-0">
+          <AvatarImage src={avatar} alt={name} />
+          <AvatarFallback className={iconColorClasses[color]}>
+            <Icon className="w-4 h-4" />
+          </AvatarFallback>
+        </Avatar>
         
-        <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">{description}</p>
-        
-        <div className="h-1.5 bg-background/50 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-bold text-foreground leading-tight truncate">{name}</h3>
+          <p className="text-[10px] font-medium text-foreground/80 truncate">{title}</p>
+          <div className="flex items-center gap-2 mt-1">
+            <div className="flex-1 h-1 bg-background/50 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="text-xs font-bold text-foreground whitespace-nowrap">{progress}%</span>
+          </div>
         </div>
       </div>
     </Card>

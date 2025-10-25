@@ -42,12 +42,12 @@ const Index = () => {
       <main className="px-4 pt-4 pb-6 space-y-6">
         {/* Welcome Section */}
         <section className="animate-fade-in">
-          <h2 className="text-xl font-bold text-foreground mb-1">Choose Your AI Coach</h2>
-          <p className="text-sm text-muted-foreground">Practice speaking with expert assistants</p>
+          <h2 className="text-lg font-bold text-foreground mb-0.5">Choose Your AI Coach</h2>
+          <p className="text-xs text-muted-foreground">Practice speaking with expert assistants</p>
         </section>
 
         {/* Assistants Grid - Mobile Optimized */}
-        <section className="space-y-3 animate-fade-in">
+        <section className="space-y-2 animate-fade-in">
           <AssistantCard
             name="Dr. Emma Hayes"
             title="Examiner"
