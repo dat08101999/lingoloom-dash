@@ -1,8 +1,12 @@
 import { LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface AssistantCardProps {
+  name: string;
   title: string;
+  description: string;
+  avatar: string;
   icon: LucideIcon;
   progress: number;
   lessons: number;
@@ -25,23 +29,33 @@ const iconColorClasses = {
   orange: "text-[hsl(32,95%,60%)]",
 };
 
-export const AssistantCard = ({ title, icon: Icon, progress, lessons, color }: AssistantCardProps) => {
+export const AssistantCard = ({ name, title, description, avatar, icon: Icon, progress, lessons, color }: AssistantCardProps) => {
   return (
     <Card 
       className={`relative overflow-hidden bg-gradient-to-br ${colorClasses[color]} border-none cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-1`}
     >
       <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className={`p-3 rounded-xl bg-background/80 backdrop-blur-sm ${iconColorClasses[color]}`}>
-            <Icon className="w-6 h-6" />
+        <div className="flex items-start gap-4 mb-4">
+          <Avatar className="w-16 h-16 border-2 border-background/80">
+            <AvatarImage src={avatar} alt={name} />
+            <AvatarFallback className={iconColorClasses[color]}>
+              <Icon className="w-6 h-6" />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-bold text-foreground mb-0.5">{name}</h3>
+            <p className="text-sm font-medium text-foreground/80">{title}</p>
           </div>
-          <span className="text-2xl font-bold text-foreground">{progress}%</span>
         </div>
         
-        <h3 className="text-lg font-semibold text-foreground mb-1">{title}</h3>
-        <p className="text-sm text-muted-foreground">{lessons} lessons completed</p>
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{description}</p>
         
-        <div className="mt-4 h-2 bg-background/50 rounded-full overflow-hidden">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-muted-foreground">{lessons} sessions</span>
+          <span className="text-lg font-bold text-foreground">{progress}%</span>
+        </div>
+        
+        <div className="h-2 bg-background/50 rounded-full overflow-hidden">
           <div 
             className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}

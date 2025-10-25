@@ -1,7 +1,12 @@
 import { AssistantCard } from "@/components/AssistantCard";
 import { ProgressChart } from "@/components/ProgressChart";
 import { VocabularySection } from "@/components/VocabularySection";
-import { MessageSquare, Pencil, BookOpen, Headphones, FileText } from "lucide-react";
+import { ClipboardCheck, BookOpen, Drama, MessageCircleHeart, Coffee } from "lucide-react";
+import examinerAvatar from "@/assets/avatar-examiner.png";
+import vocabularyAvatar from "@/assets/avatar-vocabulary.png";
+import roleplayAvatar from "@/assets/avatar-roleplay.png";
+import coachAvatar from "@/assets/avatar-coach.png";
+import casualAvatar from "@/assets/avatar-casual.png";
 
 const Index = () => {
   return (
@@ -35,42 +40,57 @@ const Index = () => {
         {/* Assistants Section */}
         <section>
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">AI Learning Assistants</h2>
-            <p className="text-muted-foreground">Choose your practice mode</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">AI Speaking Assistants</h2>
+            <p className="text-muted-foreground">Choose your AI companion to practice English speaking</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <AssistantCard
-              title="Speaking"
-              icon={MessageSquare}
+              name="Dr. Emma Hayes"
+              title="Examiner"
+              description="Professional assessor who tests your English speaking skills with structured evaluations"
+              avatar={examinerAvatar}
+              icon={ClipboardCheck}
               progress={75}
               lessons={24}
               color="primary"
             />
             <AssistantCard
-              title="Writing"
-              icon={Pencil}
+              name="Ms. Lily Chen"
+              title="Vocabulary & Pronounce"
+              description="Patient teacher specializing in pronunciation and building your vocabulary foundation"
+              avatar={vocabularyAvatar}
+              icon={BookOpen}
               progress={68}
               lessons={19}
               color="secondary"
             />
             <AssistantCard
-              title="Reading"
-              icon={BookOpen}
+              name="Max Sterling"
+              title="Role Play"
+              description="Creative actor who brings scenarios to life through immersive role-playing exercises"
+              avatar={roleplayAvatar}
+              icon={Drama}
               progress={82}
               lessons={31}
               color="accent"
             />
             <AssistantCard
-              title="Listening"
-              icon={Headphones}
+              name="Coach Ryan Lee"
+              title="Speaking Coach"
+              description="Motivational guide who helps you develop confidence and fluency in your speaking"
+              avatar={coachAvatar}
+              icon={MessageCircleHeart}
               progress={60}
               lessons={15}
               color="purple"
             />
             <AssistantCard
-              title="Grammar"
-              icon={FileText}
+              name="Jamie Park"
+              title="Casual Talk"
+              description="Friendly conversationalist for relaxed chats about everyday topics and interests"
+              avatar={casualAvatar}
+              icon={Coffee}
               progress={55}
               lessons={12}
               color="orange"
