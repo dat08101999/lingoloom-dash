@@ -30,46 +30,46 @@ const masteryColors = {
 export const VocabularySection = () => {
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground mb-1">Your Vocabulary</h2>
-          <p className="text-muted-foreground">{vocabulary.length} words mastered</p>
+          <h2 className="text-lg font-bold text-foreground mb-0.5">Vocabulary</h2>
+          <p className="text-xs text-muted-foreground">{vocabulary.length} words</p>
         </div>
-        <Badge variant="outline" className="px-4 py-2 text-sm bg-primary/10 border-primary/20 text-primary">
-          <Star className="w-4 h-4 mr-2 fill-primary" />
-          {vocabulary.filter(v => v.mastery === "advanced").length} Advanced
+        <Badge variant="outline" className="px-3 py-1 text-xs bg-primary/10 border-primary/20 text-primary">
+          <Star className="w-3 h-3 mr-1 fill-primary" />
+          {vocabulary.filter(v => v.mastery === "advanced").length} mastered
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {vocabulary.map((vocab, index) => (
           <Card 
             key={index}
-            className="p-4 border-none shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] transition-all duration-300 hover:scale-105 cursor-pointer"
+            className="p-3 border-none shadow-lg active:scale-95 hover:scale-[1.02] transition-all duration-300 cursor-pointer"
           >
-            <div className="flex items-start justify-between mb-3">
-              <Badge variant="outline" className="text-xs">
+            <div className="flex flex-col gap-2 mb-2">
+              <Badge variant="outline" className="text-[9px] self-start px-1.5 py-0.5">
                 {vocab.category}
               </Badge>
-              <Badge variant="outline" className={`text-xs ${masteryColors[vocab.mastery]}`}>
+              <Badge variant="outline" className={`text-[9px] self-start px-1.5 py-0.5 ${masteryColors[vocab.mastery]}`}>
                 {vocab.mastery}
               </Badge>
             </div>
 
-            <div className="mb-3">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-semibold text-foreground">{vocab.word}</h3>
-                <Volume2 className="w-4 h-4 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
+            <div className="mb-2">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <h3 className="text-sm font-semibold text-foreground leading-tight">{vocab.word}</h3>
+                <Volume2 className="w-3 h-3 text-muted-foreground active:text-primary transition-colors cursor-pointer flex-shrink-0" />
               </div>
-              <p className="text-muted-foreground">{vocab.translation}</p>
+              <p className="text-xs text-muted-foreground leading-tight">{vocab.translation}</p>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <RotateCcw className="w-3 h-3" />
-                Practiced {vocab.practiced}x
+            <div className="flex items-center justify-between text-[9px] text-muted-foreground">
+              <span className="flex items-center gap-0.5">
+                <RotateCcw className="w-2.5 h-2.5" />
+                {vocab.practiced}x
               </span>
-              <span className="text-primary font-medium">Review →</span>
+              <span className="text-primary font-medium">Review</span>
             </div>
           </Card>
         ))}

@@ -32,30 +32,29 @@ const iconColorClasses = {
 export const AssistantCard = ({ name, title, description, avatar, icon: Icon, progress, lessons, color }: AssistantCardProps) => {
   return (
     <Card 
-      className={`relative overflow-hidden bg-gradient-to-br ${colorClasses[color]} border-none cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-1`}
+      className={`relative overflow-hidden bg-gradient-to-br ${colorClasses[color]} border-none cursor-pointer transition-all duration-300 active:scale-95 hover:scale-[1.02] shadow-lg`}
     >
-      <div className="p-6">
-        <div className="flex items-start gap-4 mb-4">
-          <Avatar className="w-16 h-16 border-2 border-background/80">
+      <div className="p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <Avatar className="w-14 h-14 border-2 border-background/80 shadow-md">
             <AvatarImage src={avatar} alt={name} />
             <AvatarFallback className={iconColorClasses[color]}>
-              <Icon className="w-6 h-6" />
+              <Icon className="w-5 h-5" />
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-foreground mb-0.5">{name}</h3>
-            <p className="text-sm font-medium text-foreground/80">{title}</p>
+            <h3 className="text-base font-bold text-foreground mb-0.5 leading-tight">{name}</h3>
+            <p className="text-xs font-medium text-foreground/80">{title}</p>
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="text-lg font-bold text-foreground">{progress}%</span>
+            <span className="text-[10px] text-muted-foreground">{lessons} done</span>
           </div>
         </div>
         
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{description}</p>
+        <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">{description}</p>
         
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-muted-foreground">{lessons} sessions</span>
-          <span className="text-lg font-bold text-foreground">{progress}%</span>
-        </div>
-        
-        <div className="h-2 bg-background/50 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-background/50 rounded-full overflow-hidden">
           <div 
             className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
