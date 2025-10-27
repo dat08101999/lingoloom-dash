@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -30,8 +31,15 @@ const iconColorClasses = {
 };
 
 export const AssistantCard = ({ name, title, description, avatar, icon: Icon, progress, lessons, color }: AssistantCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/talk?coach=${encodeURIComponent(name)}`);
+  };
+
   return (
     <Card 
+      onClick={handleClick}
       className={`relative overflow-hidden bg-gradient-to-br ${colorClasses[color]} border-none cursor-pointer transition-all duration-300 active:scale-95 hover:scale-[1.02] shadow-lg`}
     >
       <div className="p-3 flex items-center gap-3">
