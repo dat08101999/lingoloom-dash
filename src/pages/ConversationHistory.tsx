@@ -9,13 +9,18 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import casualAvatar from "@/assets/avatar-casual.png";
+import examinerAvatar from "@/assets/avatar-examiner.png";
+import coachAvatar from "@/assets/avatar-coach.png";
+import vocabularyAvatar from "@/assets/avatar-vocabulary.png";
+import roleplayAvatar from "@/assets/avatar-roleplay.png";
 
 // Mock conversation data with skills review
 const mockConversations = [
   {
     id: 1,
     coachName: "Casual Conversation",
-    avatar: "/placeholder.svg",
+    avatar: casualAvatar,
     topic: "Travel experiences in Asia",
     lastMessage: "That sounds like an amazing trip! I'd love to hear more about...",
     messageCount: 15,
@@ -35,7 +40,7 @@ const mockConversations = [
   {
     id: 2,
     coachName: "IELTS Examiner",
-    avatar: "/placeholder.svg",
+    avatar: examinerAvatar,
     topic: "Speaking Test - Part 2",
     lastMessage: "Your fluency was good, but let's work on vocabulary range...",
     messageCount: 8,
@@ -55,7 +60,7 @@ const mockConversations = [
   {
     id: 3,
     coachName: "Speaking Coach",
-    avatar: "/placeholder.svg",
+    avatar: coachAvatar,
     topic: "Pronunciation practice",
     lastMessage: "Great improvement on those difficult sounds!",
     messageCount: 22,
@@ -75,7 +80,7 @@ const mockConversations = [
   {
     id: 4,
     coachName: "Vocabulary Coach",
-    avatar: "/placeholder.svg",
+    avatar: vocabularyAvatar,
     topic: "Business English terms",
     lastMessage: "Let's review those idioms we learned...",
     messageCount: 12,
@@ -95,7 +100,7 @@ const mockConversations = [
   {
     id: 5,
     coachName: "Role-play Partner",
-    avatar: "/placeholder.svg",
+    avatar: roleplayAvatar,
     topic: "Job interview practice",
     lastMessage: "Your answers were confident and well-structured...",
     messageCount: 18,
@@ -137,9 +142,15 @@ const ConversationHistory = () => {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 85) return "text-green-500";
-    if (score >= 70) return "text-yellow-500";
-    return "text-orange-500";
+    if (score >= 85) return "text-success";
+    if (score >= 70) return "text-info";
+    return "text-warning";
+  };
+
+  const getScoreBadgeVariant = (score: number): "default" | "secondary" | "outline" => {
+    if (score >= 85) return "default";
+    if (score >= 70) return "secondary";
+    return "outline";
   };
 
   const getScoreLabel = (score: number) => {
@@ -185,11 +196,11 @@ const ConversationHistory = () => {
               >
                 <Collapsible open={isExpanded} onOpenChange={() => toggleCard(conversation.id)}>
                   {/* Collapsed View - Summary */}
-                  <div className="p-5">
+                  <div className="p-5 bg-gradient-to-br from-card via-card to-primary/5">
                     <div className="flex gap-4">
-                      <Avatar className="h-14 w-14 border-2 border-primary/20 flex-shrink-0">
+                      <Avatar className="h-16 w-16 border-2 border-primary/30 shadow-md flex-shrink-0">
                         <AvatarImage src={conversation.avatar} alt={conversation.coachName} />
-                        <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
+                        <AvatarFallback className="bg-primary/20 text-primary text-sm font-bold">
                           {conversation.coachName.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
@@ -223,7 +234,10 @@ const ConversationHistory = () => {
                             <Clock className="h-3 w-3" />
                             {conversation.duration}
                           </Badge>
-                          <Badge className={`gap-1 ${getScoreColor(conversation.overallScore)}`}>
+                          <Badge 
+                            variant={getScoreBadgeVariant(conversation.overallScore)}
+                            className="gap-1"
+                          >
                             <Award className="h-3 w-3" />
                             {getScoreLabel(conversation.overallScore)}
                           </Badge>
@@ -254,8 +268,8 @@ const ConversationHistory = () => {
 
                   {/* Expanded View - Detailed Review */}
                   <CollapsibleContent>
-                    <div className="px-5 pb-5 space-y-4 animate-fade-in">
-                      <Separator />
+                    <div className="px-5 pb-5 space-y-4 animate-fade-in bg-gradient-to-br from-card via-card to-primary/5">
+                      <Separator className="bg-border/50" />
 
                       {/* Skills Review Section */}
                       <div className="space-y-3">
@@ -297,7 +311,7 @@ const ConversationHistory = () => {
 
                         {/* Strengths */}
                         <div className="pl-6 space-y-1">
-                          <p className="text-xs font-semibold text-green-600 dark:text-green-400">
+                          <p className="text-xs font-semibold text-success">
                             ✓ Strengths:
                           </p>
                           <ul className="text-xs text-muted-foreground space-y-0.5">
@@ -309,7 +323,7 @@ const ConversationHistory = () => {
 
                         {/* Areas to Improve */}
                         <div className="pl-6 space-y-1">
-                          <p className="text-xs font-semibold text-orange-600 dark:text-orange-400">
+                          <p className="text-xs font-semibold text-warning">
                             → Areas to Improve:
                           </p>
                           <ul className="text-xs text-muted-foreground space-y-0.5">
