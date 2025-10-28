@@ -1,7 +1,9 @@
 import { AssistantCard } from "@/components/AssistantCard";
 import { ProgressChart } from "@/components/ProgressChart";
 import { VocabularySection } from "@/components/VocabularySection";
-import { ClipboardCheck, BookOpen, Drama, MessageCircleHeart, Coffee } from "lucide-react";
+import { ClipboardCheck, BookOpen, Drama, MessageCircleHeart, Coffee, History } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import examinerAvatar from "@/assets/avatar-examiner.png";
 import vocabularyAvatar from "@/assets/avatar-vocabulary.png";
 import roleplayAvatar from "@/assets/avatar-roleplay.png";
@@ -9,6 +11,8 @@ import coachAvatar from "@/assets/avatar-coach.png";
 import casualAvatar from "@/assets/avatar-casual.png";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Mobile Header */}
@@ -26,6 +30,14 @@ const Index = () => {
             </div>
             
             <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/history")}
+                className="h-9 w-9 hover:bg-primary/10"
+              >
+                <History className="h-5 w-5" />
+              </Button>
               <div className="text-right">
                 <p className="text-xs font-medium text-foreground">Day 12</p>
                 <p className="text-[10px] text-muted-foreground flex items-center justify-end gap-1">
