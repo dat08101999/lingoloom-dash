@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, MessageSquare, TrendingUp, Award, Lightbulb } from "lucide-react";
+import { ArrowLeft, Clock, MessageSquare, TrendingUp, Award, Lightbulb, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 // Mock conversation data with skills review
 const mockConversations = [
@@ -114,6 +116,13 @@ const mockConversations = [
 
 const ConversationHistory = () => {
   const navigate = useNavigate();
+  const [expandedCards, setExpandedCards] = useState<number[]>([]);
+
+  const toggleCard = (id: number) => {
+    setExpandedCards(prev => 
+      prev.includes(id) ? prev.filter(cardId => cardId !== id) : [...prev, id]
+    );
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -166,134 +175,166 @@ const ConversationHistory = () => {
       {/* Content */}
       <ScrollArea className="h-[calc(100vh-73px)]">
         <main className="container max-w-4xl mx-auto px-4 py-6 space-y-4">
-          {mockConversations.map((conversation) => (
-            <Card
-              key={conversation.id}
-              className="p-5 hover:shadow-lg transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm animate-fade-in"
-            >
-              {/* Header Section */}
-              <div className="flex gap-4 mb-4">
-                <Avatar className="h-14 w-14 border-2 border-primary/20 flex-shrink-0">
-                  <AvatarImage src={conversation.avatar} alt={conversation.coachName} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
-                    {conversation.coachName.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-foreground text-base truncate">
-                        {conversation.coachName}
-                      </h3>
-                      <p className="text-sm text-primary font-medium truncate">
-                        {conversation.topic}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                      <div className="text-xs text-muted-foreground">
-                        {formatDate(conversation.date)}
-                      </div>
-                      <div className={`text-2xl font-bold ${getScoreColor(conversation.overallScore)}`}>
-                        {conversation.overallScore}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 flex-wrap mt-2">
-                    <Badge variant="secondary" className="gap-1">
-                      <MessageSquare className="h-3 w-3" />
-                      {conversation.messageCount}
-                    </Badge>
-                    <Badge variant="outline" className="gap-1">
-                      <Clock className="h-3 w-3" />
-                      {conversation.duration}
-                    </Badge>
-                    <Badge className={`gap-1 ${getScoreColor(conversation.overallScore)}`}>
-                      <Award className="h-3 w-3" />
-                      {getScoreLabel(conversation.overallScore)}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              {/* Skills Review Section */}
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <h4 className="text-sm font-semibold text-foreground">Skills Assessment</h4>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  {Object.entries(conversation.skills).map(([skill, score]) => (
-                    <div key={skill} className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-muted-foreground capitalize">
-                          {skill}
-                        </span>
-                        <span className={`text-xs font-bold ${getScoreColor(score)}`}>
-                          {score}%
-                        </span>
-                      </div>
-                      <Progress value={score} className="h-1.5" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              {/* Feedback Section */}
-              <div className="space-y-3">
-                <div className="flex items-start gap-2">
-                  <Lightbulb className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <h4 className="text-sm font-semibold text-foreground">AI Feedback</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {conversation.feedback}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Strengths */}
-                <div className="pl-6 space-y-1">
-                  <p className="text-xs font-semibold text-green-600 dark:text-green-400">
-                    ✓ Strengths:
-                  </p>
-                  <ul className="text-xs text-muted-foreground space-y-0.5">
-                    {conversation.strengths.map((strength, idx) => (
-                      <li key={idx}>• {strength}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Areas to Improve */}
-                <div className="pl-6 space-y-1">
-                  <p className="text-xs font-semibold text-orange-600 dark:text-orange-400">
-                    → Areas to Improve:
-                  </p>
-                  <ul className="text-xs text-muted-foreground space-y-0.5">
-                    {conversation.improvements.map((improvement, idx) => (
-                      <li key={idx}>• {improvement}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              {/* Action Button */}
-              <Button
-                onClick={() => navigate(`/talk?coach=${encodeURIComponent(conversation.coachName)}`)}
-                className="w-full"
-                variant="outline"
+          {mockConversations.map((conversation) => {
+            const isExpanded = expandedCards.includes(conversation.id);
+            
+            return (
+              <Card
+                key={conversation.id}
+                className="overflow-hidden hover:shadow-lg transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm animate-fade-in"
               >
-                Continue with {conversation.coachName}
-              </Button>
-            </Card>
-          ))}
+                <Collapsible open={isExpanded} onOpenChange={() => toggleCard(conversation.id)}>
+                  {/* Collapsed View - Summary */}
+                  <div className="p-5">
+                    <div className="flex gap-4">
+                      <Avatar className="h-14 w-14 border-2 border-primary/20 flex-shrink-0">
+                        <AvatarImage src={conversation.avatar} alt={conversation.coachName} />
+                        <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
+                          {conversation.coachName.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-foreground text-base truncate">
+                              {conversation.coachName}
+                            </h3>
+                            <p className="text-sm text-primary font-medium truncate">
+                              {conversation.topic}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                            <div className="text-xs text-muted-foreground">
+                              {formatDate(conversation.date)}
+                            </div>
+                            <div className={`text-2xl font-bold ${getScoreColor(conversation.overallScore)}`}>
+                              {conversation.overallScore}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="secondary" className="gap-1">
+                            <MessageSquare className="h-3 w-3" />
+                            {conversation.messageCount}
+                          </Badge>
+                          <Badge variant="outline" className="gap-1">
+                            <Clock className="h-3 w-3" />
+                            {conversation.duration}
+                          </Badge>
+                          <Badge className={`gap-1 ${getScoreColor(conversation.overallScore)}`}>
+                            <Award className="h-3 w-3" />
+                            {getScoreLabel(conversation.overallScore)}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expand/Collapse Button */}
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full mt-4 gap-2"
+                      >
+                        {isExpanded ? (
+                          <>
+                            <ChevronUp className="h-4 w-4" />
+                            Hide Details
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-4 w-4" />
+                            View Detailed Review
+                          </>
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
+
+                  {/* Expanded View - Detailed Review */}
+                  <CollapsibleContent>
+                    <div className="px-5 pb-5 space-y-4 animate-fade-in">
+                      <Separator />
+
+                      {/* Skills Review Section */}
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-primary" />
+                          <h4 className="text-sm font-semibold text-foreground">Skills Assessment</h4>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3">
+                          {Object.entries(conversation.skills).map(([skill, score]) => (
+                            <div key={skill} className="space-y-1">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-medium text-muted-foreground capitalize">
+                                  {skill}
+                                </span>
+                                <span className={`text-xs font-bold ${getScoreColor(score)}`}>
+                                  {score}%
+                                </span>
+                              </div>
+                              <Progress value={score} className="h-1.5" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Feedback Section */}
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-2">
+                          <Lightbulb className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <div className="flex-1 space-y-2">
+                            <h4 className="text-sm font-semibold text-foreground">AI Feedback</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {conversation.feedback}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Strengths */}
+                        <div className="pl-6 space-y-1">
+                          <p className="text-xs font-semibold text-green-600 dark:text-green-400">
+                            ✓ Strengths:
+                          </p>
+                          <ul className="text-xs text-muted-foreground space-y-0.5">
+                            {conversation.strengths.map((strength, idx) => (
+                              <li key={idx}>• {strength}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Areas to Improve */}
+                        <div className="pl-6 space-y-1">
+                          <p className="text-xs font-semibold text-orange-600 dark:text-orange-400">
+                            → Areas to Improve:
+                          </p>
+                          <ul className="text-xs text-muted-foreground space-y-0.5">
+                            {conversation.improvements.map((improvement, idx) => (
+                              <li key={idx}>• {improvement}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Action Button */}
+                      <Button
+                        onClick={() => navigate(`/talk?coach=${encodeURIComponent(conversation.coachName)}`)}
+                        className="w-full"
+                      >
+                        Continue with {conversation.coachName}
+                      </Button>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </Card>
+            );
+          })}
         </main>
       </ScrollArea>
     </div>
