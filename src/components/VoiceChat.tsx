@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Mic, X, Volume2 } from "lucide-react";
+import { Mic, X, Volume2, PhoneOff } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import CallResultScreen from "./CallResultScreen";
 
 interface VoiceChatProps {
   topic: string;
@@ -19,6 +20,7 @@ interface Message {
 const VoiceChat = ({ topic, onBack, coachName }: VoiceChatProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isAISpeaking, setIsAISpeaking] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -59,6 +61,32 @@ const VoiceChat = ({ topic, onBack, coachName }: VoiceChatProps) => {
     }, 1500);
   };
 
+  const handleEndCall = () => {
+    setShowResults(true);
+  };
+
+  const handleContinue = () => {
+    setShowResults(false);
+    setMessages([
+      {
+        role: "ai",
+        content: `Let's continue practicing "${topic}". I'm ready when you are!`,
+        timestamp: new Date(),
+      },
+    ]);
+  };
+
+  if (showResults) {
+    return (
+      <CallResultScreen
+        topic={topic}
+        coachName={coachName}
+        onContinue={handleContinue}
+        onBack={onBack}
+      />
+    );
+  }
+
   return (
     <div className="h-full flex flex-col bg-gradient-to-b from-background to-background">
       {/* Topic Banner */}
@@ -71,9 +99,20 @@ const VoiceChat = ({ topic, onBack, coachName }: VoiceChatProps) => {
             <span className="text-muted-foreground">Topic:</span> {topic}
           </p>
         </div>
-        <Button variant="ghost" size="sm" onClick={onBack} className="h-7 w-7 p-0 hover:bg-destructive/10">
-          <X className="w-3.5 h-3.5" />
-        </Button>
+        <div className="flex gap-1">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleEndCall}
+            className="h-7 px-2 text-xs hover:bg-destructive/10 hover:text-destructive"
+          >
+            <PhoneOff className="w-3 h-3 mr-1" />
+            End Call
+          </Button>
+          <Button variant="ghost" size="sm" onClick={onBack} className="h-7 w-7 p-0 hover:bg-destructive/10">
+            <X className="w-3.5 h-3.5" />
+          </Button>
+        </div>
       </div>
 
       {/* Messages */}
