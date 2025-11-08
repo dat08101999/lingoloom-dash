@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { AssistantCard } from "@/components/AssistantCard";
 import { ProgressChart } from "@/components/ProgressChart";
 import { VocabularySection } from "@/components/VocabularySection";
+import { Onboarding, OnboardingData } from "@/components/Onboarding";
 import { ClipboardCheck, BookOpen, Drama, MessageCircleHeart, Coffee, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +14,25 @@ import casualAvatar from "@/assets/avatar-casual.png";
 
 const Index = () => {
   const navigate = useNavigate();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const hasCompletedOnboarding = localStorage.getItem("onboarding_completed");
+    if (!hasCompletedOnboarding) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = (data: OnboardingData) => {
+    localStorage.setItem("onboarding_completed", "true");
+    localStorage.setItem("user_goal", data.goal);
+    localStorage.setItem("user_level", data.level);
+    setShowOnboarding(false);
+  };
+
+  if (showOnboarding) {
+    return <Onboarding onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-background pb-20">
