@@ -30,6 +30,13 @@ const Index = () => {
     setShowOnboarding(false);
   };
 
+  const handleRestartOnboarding = () => {
+    localStorage.removeItem("onboarding_completed");
+    localStorage.removeItem("user_goal");
+    localStorage.removeItem("user_level");
+    setShowOnboarding(true);
+  };
+
   if (showOnboarding) {
     return <Onboarding onComplete={handleOnboardingComplete} />;
   }
@@ -40,7 +47,10 @@ const Index = () => {
       <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div 
+              className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={handleRestartOnboarding}
+            >
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-[hsl(282,90%,68%)] flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-sm">AL</span>
               </div>
